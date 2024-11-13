@@ -1,0 +1,17 @@
+FROM bitnami/spark:latest
+
+# 루트 사용자로 전환
+USER root
+
+# 필요한 패키지 설치 및 spark-excel JAR 파일 다운로드
+RUN apt-get update && \
+    apt-get install -y wget && \
+    mkdir -p /opt/bitnami/spark/jars && \
+    wget -P /opt/bitnami/spark/jars/ \
+        https://jdbc.postgresql.org/download/postgresql-42.6.0.jar \
+    # 캐시 정리
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 다시 비루트 사용자로 전환
+USER 1001
